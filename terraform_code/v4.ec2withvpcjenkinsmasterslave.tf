@@ -81,10 +81,20 @@ resource "aws_vpc_security_group_egress_rule" "allow_all_traffic_ipv4" {
   ip_protocol       = "-1" # All ports
 }
 
-resource "aws_instance" "demo-server2" {
-  ami                  = "ami-0c2e61fdcb5495691"
+resource "aws_instance" "demo-server" {
+  for_each = toset(["jenkins-master", "jenkins-slave", "ansible"])
+
+  ami                  = "ami-09a9858973b288bdd"
   instance_type        = "t3.micro"
   key_name             = "TF"
   vpc_security_group_ids = [aws_security_group.demo-sg.id]
-  subnet_id            = aws_subnet.dpp-public-subnt-01.id
+  
+  subnet_id = aws_subnet.dpp-public-subnt-01.id  # Agar har instance ko alag subnet me rakhna hai, to condition lagani padegi
+  
+  tags = {
+    Name = each.key
+  }
 }
+
+
+
