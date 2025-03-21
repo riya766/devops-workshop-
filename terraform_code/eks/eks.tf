@@ -143,10 +143,10 @@ resource "aws_eks_node_group" "backend" {
   node_role_arn   = aws_iam_role.worker.arn
   subnet_ids = [var.subnet_ids[0],var.subnet_ids[1]]
   capacity_type = "ON_DEMAND"
-  disk_size = "20"
-  instance_types = ["t2.small"]
+  disk_size = "30"
+  instance_types =  ["t3.medium"]
   remote_access {
-    ec2_ssh_key = "dpp"
+    ec2_ssh_key = "TF"
     source_security_group_ids = [var.sg_ids]
   } 
   
